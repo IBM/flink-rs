@@ -1,8 +1,10 @@
 # flink-rs
 
+[![CI](https://github.com/IBM/flink-rs/actions/workflows/ci.yml/badge.svg)](https://github.com/IBM/flink-rs/actions/workflows/ci.yml)
+
 A Rust CLI for interacting with a running [Apache Flink](https://flink.apache.org/) cluster via the [REST API v1](https://nightlies.apache.org/flink/flink-docs-release-2.3/generated/rest_v1_dispatcher.yml) (Flink 2.3).
 
-Pre-built archives for Linux (x86-64 musl static), Linux (ARM64), macOS (x86-64), macOS (Apple Silicon), and Windows (x86-64) are available in the [`dist/`](dist/) directory. To rebuild them locally run `just package-all`.
+> First release — welcome to the beta. Feedback and contributions are very welcome.
 
 ## Install
 
