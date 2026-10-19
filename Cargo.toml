@@ -1,0 +1,55 @@
+[package]
+name = "flink-rs"
+version = "0.1.0"
+edition = "2024"
+description = "Apache Flink CLI — interact with a running Flink cluster via the REST API"
+license = "Apache-2.0"
+repository = "https://github.com/youorg/flink-rs"
+default-run = "flink-rs"
+
+[[bin]]
+name = "flink-rs"
+path = "src/main.rs"
+
+[dependencies]
+# CLI
+clap = { version = "4", features = ["derive", "env"] }
+
+# Async runtime
+tokio = { version = "1", features = ["full"] }
+
+# HTTP client (rustls — no OpenSSL dep, good for cross-compile)
+reqwest = { version = "0.12", default-features = false, features = [
+    "json",
+    "multipart",
+    "rustls-tls",
+    "stream",
+] }
+
+# Serde
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+toml = "0.8"
+
+# Terminal output
+comfy-table = "7"
+colored = "2"
+
+# In-place watch / TUI
+ratatui = "0.29"
+crossterm = "0.28"
+
+# Error handling
+anyhow = "1"
+
+# Config directory resolution
+dirs = "5"
+
+# Human-readable durations
+humantime = "2"
+
+[profile.release]
+opt-level = 3
+lto = true
+codegen-units = 1
+strip = true
