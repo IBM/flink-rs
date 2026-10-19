@@ -9,12 +9,12 @@ mod models;
 mod output;
 mod watch;
 
-use anyhow::{bail, Result};
+use anyhow::{Result, bail};
 use clap::Parser;
 use cli::{ClusterAction, Commands, ConfigAction, JarAction, JobAction, TaskmanagerAction};
 use client::FlinkClient;
-use config::OutputFormat;
 use colored::Colorize;
+use config::OutputFormat;
 
 #[tokio::main]
 async fn main() {
@@ -56,7 +56,9 @@ async fn run(command: Commands, cfg: config::Config) -> Result<()> {
                             _ => bail!("output must be 'table' or 'json'"),
                         };
                     }
-                    _ => bail!("unknown config key '{key}'. Valid keys: host, timeout-secs, output"),
+                    _ => {
+                        bail!("unknown config key '{key}'. Valid keys: host, timeout-secs, output")
+                    }
                 }
                 saved.save()?;
                 println!("Saved.");
@@ -191,10 +193,9 @@ async fn run(command: Commands, cfg: config::Config) -> Result<()> {
                     savepoint,
                     no_wait,
                 } => {
-                    let job_id = submit_jar(
-                        &client, &jar_id, entry_class, parallelism, args, savepoint,
-                    )
-                    .await?;
+                    let job_id =
+                        submit_jar(&client, &jar_id, entry_class, parallelism, args, savepoint)
+                            .await?;
                     println!("Job submitted: {}", job_id.green().bold());
                     if !no_wait {
                         wait_for_job(&client, &job_id).await?;
@@ -211,17 +212,12 @@ async fn run(command: Commands, cfg: config::Config) -> Result<()> {
                     println!("Uploading {}…", jar.display());
                     let upload_resp = api::jars::upload(&client, &jar).await?;
                     let filename = upload_resp.filename.unwrap_or_default();
-                    let jar_id = filename
-                        .rsplit('/')
-                        .next()
-                        .unwrap_or(&filename)
-                        .to_owned();
+                    let jar_id = filename.rsplit('/').next().unwrap_or(&filename).to_owned();
                     println!("Uploaded as JAR ID: {}", jar_id.dimmed());
 
                     // 2. Run
                     let job_id =
-                        submit_jar(&client, &jar_id, entry_class, parallelism, args, None)
-                            .await?;
+                        submit_jar(&client, &jar_id, entry_class, parallelism, args, None).await?;
                     println!("Job submitted: {}", job_id.green().bold());
                     if !no_wait {
                         wait_for_job(&client, &job_id).await?;
@@ -257,7 +253,8 @@ async fn submit_jar(
         allow_non_restored_state: None,
     };
     let resp = api::jars::run(client, jar_id, &body).await?;
-    resp.job_id.ok_or_else(|| anyhow::anyhow!("No job ID returned by Flink"))
+    resp.job_id
+        .ok_or_else(|| anyhow::anyhow!("No job ID returned by Flink"))
 }
 
 /// Poll job status until it reaches a terminal state, printing updates.

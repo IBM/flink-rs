@@ -47,7 +47,6 @@ pub struct JobDetails {
     pub job_type: Option<String>,
 }
 
-
 #[derive(Debug, Clone, Deserialize, Serialize)]
 pub struct JobExecutionResult {
     pub id: Option<String>,

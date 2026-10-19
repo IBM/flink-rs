@@ -28,9 +28,7 @@ pub async fn run(
     jar_id: &str,
     body: &JarRunRequestBody,
 ) -> Result<JarRunResponse> {
-    client
-        .post_json(&format!("/jars/{jar_id}/run"), body)
-        .await
+    client.post_json(&format!("/jars/{jar_id}/run"), body).await
 }
 
 pub async fn delete(client: &FlinkClient, jar_id: &str) -> Result<()> {

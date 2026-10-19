@@ -12,15 +12,15 @@ use anyhow::Result;
 use crossterm::{
     event::{self, Event, KeyCode, KeyModifiers},
     execute,
-    terminal::{disable_raw_mode, enable_raw_mode, EnterAlternateScreen, LeaveAlternateScreen},
+    terminal::{EnterAlternateScreen, LeaveAlternateScreen, disable_raw_mode, enable_raw_mode},
 };
 use ratatui::{
+    Terminal,
     backend::CrosstermBackend,
     layout::{Constraint, Direction, Layout},
     style::{Color, Modifier, Style},
     text::{Line, Span},
     widgets::{Block, Borders, Paragraph, Row, Table},
-    Terminal,
 };
 use std::{
     io,
@@ -69,7 +69,8 @@ pub async fn run(client: &FlinkClient, job_id: &str, interval_secs: u64) -> Resu
                     last_details = Some(details);
                     if terminal_state {
                         // One final render, then exit.
-                        terminal.draw(|f| render(f, job_id, &last_details, &last_err, interval_secs))?;
+                        terminal
+                            .draw(|f| render(f, job_id, &last_details, &last_err, interval_secs))?;
                         break;
                     }
                 }
@@ -142,15 +143,38 @@ fn render(
         };
 
         let duration_str = table::format_duration_ms(d.duration);
-        let tasks_total = d.tasks.as_ref().and_then(|t| t.total).map(|v| v.to_string()).unwrap_or_else(|| "—".into());
-        let tasks_running = d.tasks.as_ref().and_then(|t| t.running).map(|v| v.to_string()).unwrap_or_else(|| "—".into());
-        let tasks_finished = d.tasks.as_ref().and_then(|t| t.finished).map(|v| v.to_string()).unwrap_or_else(|| "—".into());
-        let tasks_failed = d.tasks.as_ref().and_then(|t| t.failed).map(|v| v.to_string()).unwrap_or_else(|| "—".into());
+        let tasks_total = d
+            .tasks
+            .as_ref()
+            .and_then(|t| t.total)
+            .map(|v| v.to_string())
+            .unwrap_or_else(|| "—".into());
+        let tasks_running = d
+            .tasks
+            .as_ref()
+            .and_then(|t| t.running)
+            .map(|v| v.to_string())
+            .unwrap_or_else(|| "—".into());
+        let tasks_finished = d
+            .tasks
+            .as_ref()
+            .and_then(|t| t.finished)
+            .map(|v| v.to_string())
+            .unwrap_or_else(|| "—".into());
+        let tasks_failed = d
+            .tasks
+            .as_ref()
+            .and_then(|t| t.failed)
+            .map(|v| v.to_string())
+            .unwrap_or_else(|| "—".into());
         let job_type = d.job_type.as_deref().unwrap_or("—");
 
         let rows: Vec<Row> = vec![
-            Row::new(vec!["Status", state])
-                .style(Style::default().fg(state_color).add_modifier(Modifier::BOLD)),
+            Row::new(vec!["Status", state]).style(
+                Style::default()
+                    .fg(state_color)
+                    .add_modifier(Modifier::BOLD),
+            ),
             Row::new(vec!["Duration", &duration_str]),
             Row::new(vec!["Type", job_type]),
             Row::new(vec!["Tasks Total", &tasks_total]),
@@ -168,8 +192,7 @@ fn render(
             .block(Block::default().borders(Borders::ALL).title("Job Details"));
         f.render_widget(table_widget, chunks[1]);
     } else {
-        let para = Paragraph::new("Fetching…")
-            .block(Block::default().borders(Borders::ALL));
+        let para = Paragraph::new("Fetching…").block(Block::default().borders(Borders::ALL));
         f.render_widget(para, chunks[1]);
     }
 
