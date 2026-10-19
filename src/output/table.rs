@@ -7,7 +7,7 @@ use crate::models::{
     jobs::JobOverview,
 };
 use colored::Colorize;
-use comfy_table::{presets::UTF8_FULL_CONDENSED, Cell, Color, Table};
+use comfy_table::{Cell, Color, Table, presets::UTF8_FULL_CONDENSED};
 
 // ─── helpers ────────────────────────────────────────────────────────────────
 

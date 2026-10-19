@@ -1,10 +1,10 @@
 // Copyright IBM Corp. 2025
 // SPDX-License-Identifier: Apache-2.0
 
-use anyhow::{bail, Context, Result};
+use anyhow::{Context, Result, bail};
 use reqwest::{
-    multipart::{Form, Part},
     Client, StatusCode,
+    multipart::{Form, Part},
 };
 use serde::de::DeserializeOwned;
 use std::time::Duration;

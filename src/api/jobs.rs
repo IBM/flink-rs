@@ -28,7 +28,9 @@ pub async fn cancel(client: &FlinkClient, job_id: &str) -> Result<()> {
 }
 
 pub async fn execution_result(client: &FlinkClient, job_id: &str) -> Result<JobExecutionResult> {
-    client.get(&format!("/jobs/{job_id}/execution-result")).await
+    client
+        .get(&format!("/jobs/{job_id}/execution-result"))
+        .await
 }
 
 pub async fn status(client: &FlinkClient, job_id: &str) -> Result<String> {

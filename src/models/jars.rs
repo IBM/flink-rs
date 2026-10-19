@@ -38,7 +38,10 @@ pub struct JarRunRequestBody {
     pub parallelism: Option<i32>,
     #[serde(rename = "savepointPath", skip_serializing_if = "Option::is_none")]
     pub savepoint_path: Option<String>,
-    #[serde(rename = "allowNonRestoredState", skip_serializing_if = "Option::is_none")]
+    #[serde(
+        rename = "allowNonRestoredState",
+        skip_serializing_if = "Option::is_none"
+    )]
     pub allow_non_restored_state: Option<bool>,
 }
 
