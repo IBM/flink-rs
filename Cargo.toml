@@ -32,7 +32,7 @@ serde_json = "1"
 toml = "1.0"
 
 # Terminal output
-comfy-table = "7"
+comfy-table = "8"
 colored = "3"
 
 # In-place watch / TUI
