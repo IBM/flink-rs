@@ -43,7 +43,7 @@ crossterm = "0.29"
 anyhow = "1"
 
 # Config directory resolution
-dirs = "5"
+dirs = "7"
 
 # Human-readable durations
 humantime = "2"
