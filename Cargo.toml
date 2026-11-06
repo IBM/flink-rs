@@ -33,7 +33,7 @@ toml = "1.0"
 
 # Terminal output
 comfy-table = "7"
-colored = "2"
+colored = "3"
 
 # In-place watch / TUI
 ratatui = "0.30"
