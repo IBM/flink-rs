@@ -19,7 +19,7 @@ clap = { version = "4", features = ["derive", "env"] }
 tokio = { version = "1", features = ["full"] }
 
 # HTTP client (rustls — no OpenSSL dep, good for cross-compile)
-reqwest = { version = "0.12", default-features = false, features = [
+reqwest = { version = "0.13", default-features = false, features = [
     "json",
     "multipart",
     "rustls-tls",
