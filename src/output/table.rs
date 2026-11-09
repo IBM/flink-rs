@@ -44,7 +44,7 @@ pub fn format_duration_ms(ms: Option<i64>) -> String {
 
 fn new_table() -> Table {
     let mut t = Table::new();
-    t.load_preset(UTF8_FULL_CONDENSED);
+    t.load_style(UTF8_FULL_CONDENSED);
     t
 }
 
